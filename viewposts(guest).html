@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Posts</title>
+</head>
+<body>
+  <h1>Posts List</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Content</th>
+      </tr>
+    </thead>
+    <tbody id="postsTable">
+    </tbody>
+  </table>
+
+  <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-database-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyAhs0g1RMoV3mBy9BpYMn-X3lq2dCOFT2M",
+        authDomain: "video-streaming-platform-wsd.firebaseapp.com",
+        projectId: "video-streaming-platform-wsd",
+        storageBucket: "video-streaming-platform-wsd.appspot.com",
+        messagingSenderId: "5217413066",
+        appId: "1:5217413066:web:6948f726c5819edbf41133"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+
+    const database = firebase.database();
+
+    const postsTable = document.getElementById("postsTable");
+
+    function loadPosts() {
+        postsTable.innerHTML = "";
+        const postsRef = database.ref("posts");
+
+        postsRef.on("child_added", (snapshot) => {
+        const post = snapshot.val();
+        const postId = snapshot.key;
+        
+        const row = document.createElement("tr");
+        row.innerHTML = `
+        <td>${post.postTitle}</td>
+        <td>${post.postContent}</td>`;
+        postsTable.appendChild(row);
+        });
+    }
+    loadPosts();
+  </script>
+</body>
+</html>
