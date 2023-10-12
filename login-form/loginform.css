@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400&display=swap');
+
+body {
+    font-family: 'Quicksand', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-image: url('bg.gif');
+    background-size: cover;
+}
+
+.signin {
+    width: 400px;
+    background: #222;
+    text-align: center;
+    padding: 40px;
+    border-radius: 4px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9);
+}
+
+.signin .content h2 {
+    color: #0f0;
+    text-transform: uppercase;
+}
+
+.signin .content .inputBox input {
+    width: 100%;
+    background: #333;
+    border: none;
+    outline: none;
+    padding: 10px;
+    border-radius: 4px;
+    color: #fff;
+}
+
+.signin .content .inputBox input::placeholder {
+    color: #aaa;
+}
+
+.signin .content .form .inputBox input:focus::placeholder {
+    color: #fff;
+}
+
+.signin .content .form .inputBox input[type="submit"] {
+    padding: 10px;
+    background: #0f0;
+    color: #000;
+    font-weight: 600;
+    font-size: 1.2em;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+}
