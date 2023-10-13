@@ -1,0 +1,136 @@
+<!-- const firebaseConfig = {
+      apiKey: "AIzaSyAhs0g1RMoV3mBy9BpYMn-X3lq2dCOFT2M",
+      authDomain: "video-streaming-platform-wsd.firebaseapp.com",
+      projectId: "video-streaming-platform-wsd",
+      storageBucket: "video-streaming-platform-wsd.appspot.com",
+      messagingSenderId: "5217413066",
+      appId: "1:5217413066:web:6948f726c5819edbf41133"
+}; -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Form</title>
+  <link rel="stylesheet" href="./loginform.css"> 
+</head>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400&display=swap');
+
+body {
+    font-family: 'Quicksand', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-image: url('');
+    background-size: cover;
+}
+
+.signin {
+    width: 400px;
+    background: #222;
+    text-align: center;
+    padding: 40px;
+    border-radius: 4px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9);
+}
+
+.signin .content h2 {
+    color: #0f0;
+    text-transform: uppercase;
+}
+
+.signin .content .inputBox input {
+    width: 100%;
+    background: #333;
+    border: none;
+    outline: none;
+    padding: 10px;
+    border-radius: 4px;
+    color: #fff;
+}
+
+.signin .content .inputBox input::placeholder {
+    color: #aaa;
+}
+
+.signin .content .form .inputBox input:focus::placeholder {
+    color: #fff;
+}
+
+.signin .content .form .inputBox input[type="submit"] {
+    padding: 10px;
+    background: #0f0;
+    color: #000;
+    font-weight: 600;
+    font-size: 1.2em;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+}
+</style>
+<body>
+  <div class="signin"> 
+    <div class="content"> 
+      <h2>Sign In</h2> 
+      <div class="form"> 
+        <form id="loginForm">
+          <div class="inputBox">
+            <input type="text" id="uname" name="username" required placeholder="Username"><br><br>
+          </div>
+          <div class="inputBox">
+            <input type="password" id="pwd" name="password" placeholder="Password" required><br><br>
+          </div>
+          <div class="inputBox">  
+            <button type="submit">Submit</button>
+          </div> 
+        </form>
+      </div>
+    </div>  
+  </div>
+  <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-auth-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAhs0g1RMoV3mBy9BpYMn-X3lq2dCOFT2M",
+      authDomain: "video-streaming-platform-wsd.firebaseapp.com",
+      projectId: "video-streaming-platform-wsd",
+      storageBucket: "video-streaming-platform-wsd.appspot.com",
+      messagingSenderId: "5217413066",
+      appId: "1:5217413066:web:6948f726c5819edbf41133"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    const database = firebase.database();
+    const loginForm = document.getElementById("loginForm");
+
+    loginForm.addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const uname = document.getElementById("uname").value;
+      const pass = document.getElementById("pwd").value;
+      const credentialsRef = database.ref("user_credentials");
+
+      credentialsRef.once("value", function (snapshot) {
+        let authenticated = false;
+        snapshot.forEach((childSnapshot) => {
+          const key = childSnapshot.key;
+          const cred = childSnapshot.val();
+          console.log(cred.uname,cred.pass);
+          if (uname === cred.uname && pass === cred.pass) {
+            authenticated = true;
+            alert("Welcome Back, " + uname + "!");
+            window.location.href = "postForm.html";
+            console.log("Success!");
+          }
+        });
+
+        if (!authenticated) {
+          alert("Invalid username or password. Please try again.");
+        }
+      });
+    });
+  </script>
+</body>
+</html>

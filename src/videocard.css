@@ -1,0 +1,49 @@
+.video-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;/* Add margin to create space between cards */
+  }
+  
+  
+  .video-card {
+    width: calc(30% - 20px);
+    margin: 10px !important;
+    box-sizing: border-box;
+  }
+  .search-container {
+    text-align: center;
+    margin-bottom: 20px; /* Optional: Add some space below the search bar */
+}
+
+.search-container input {
+    margin-right: 10px; /* Optional: Add some space between input and button */
+}
+/* videocard.css */
+
+/* videocard.css */
+
+.search-container {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Add this line to horizontally center */
+  margin-bottom: 20px;
+}
+
+input[type="text"] {
+  width: 300px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  font-size: 14px;
+  border-radius: 8px;
+}
+
+button {
+  background-color: #f8f8f8;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 8px;
+}

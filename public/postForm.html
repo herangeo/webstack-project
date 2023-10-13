@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Combined Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #201e1e;
+      margin: 0;
+      padding: 0;
+      color: white;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 20px auto; /* Center the container horizontally */
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      background-color: #000000;
+      text-align: left; /* Reset text-align for inner elements */
+    }
+
+    .container h1 {
+      color: #ffffff; /* Text color for headers inside the container */
+    }
+
+    form label {
+      display: block;
+      margin-top: 10px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #1c2b3a;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      padding: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+  <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-database-compat.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Share an Update</h1>
+    <form id="postForm">
+      <label for="title">Title:</label>
+      <input type="text" id="post-title" name="post-title" required><br><br>
+
+      <label for "message">Content:</label><br>
+      <textarea id="message" name="message" rows="4" required></textarea><br><br>
+
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <div class="container">
+    <h1>Messages List</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Message</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="messagesTable">
+      </tbody>
+    </table>
+  </div>
+
+  <div class="container">
+    <h1>Posts List</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Content</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="postsTable">
+      </tbody>
+    </table>
+  </div>
+
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAhs0g1RMoV3mBy9BpYMn-X3lq2dCOFT2M",
+      authDomain: "video-streaming-platform-wsd.firebaseapp.com",
+      projectId: "video-streaming-platform-wsd",
+      storageBucket: "video-streaming-platform-wsd.appspot.com",
+      messagingSenderId: "5217413066",
+      appId: "1:5217413066:web:6948f726c5819edbf41133"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+
+    const database = firebase.database();
+    const postForm = document.getElementById("postForm");
+    const messagesTable = document.getElementById("messagesTable");
+    const postsTable = document.getElementById("postsTable");
+
+    function loadMessages() {
+      messagesTable.innerHTML = "";
+      const messagesRef = database.ref("messages");
+
+      messagesRef.on("child_added", (snapshot) => {
+        const msg = snapshot.val();
+        const msgId = snapshot.key;
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${msg.name}</td>
+          <td>${msg.email}</td>
+          <td>${msg.message}</td>
+          <td>
+            <button onclick="deleteMessage('${msgId}')" style="background-color: red;">Delete</button>
+
+          </td>
+        `;
+
+        messagesTable.appendChild(row);
+      });
+    }
+
+    function deleteMessage(msgId) {
+      const messagesRef = database.ref(`messages/${msgId}`);
+      messagesRef.remove()
+      .then(() => {
+          loadMessages();
+        })
+        .catch((error) => {
+          console.error("Error deleting message:", error);
+        });
+    }
+
+    function loadPosts() {
+        postsTable.innerHTML = "";
+        const postsRef = database.ref("posts");
+
+        postsRef.on("child_added", (snapshot) => {
+        const post = snapshot.val();
+        const postId = snapshot.key;
+        const row = document.createElement("tr");
+        row.innerHTML = `
+        <td>${post.postTitle}</td>
+        <td>${post.postContent}</td>
+        <td>
+            <button onclick="deletePost('${postId}')" style="background-color: red;">Delete</button>
+            <button onclick="updatePost('${postId}', '${post.postTitle}', '${post.postContent}')">Update</button>
+        </td>`;
+        postsTable.appendChild(row);
+        });
+    }
+
+    function deletePost(postId) {
+      const postsRef = database.ref(`posts/${postId}`);
+      postsRef.remove()
+      .then(() => {
+          loadPosts();
+        })
+        .catch((error) => {
+          console.error("Error deleting post:", error);
+        });
+    }
+
+    function updatePost(postId, currentTitle, currentContent) {
+      const newTitle = prompt("Enter the new title:", currentTitle);
+      const newContent = prompt("Enter the new content:", currentContent);
+
+      if (newTitle !== null && newContent !== null) {
+        const postRef = database.ref(`posts/${postId}`);
+        postRef.update({
+          postTitle: newTitle,
+          postContent: newContent
+        })
+        .then(() => {
+          loadPosts();
+        })
+        .catch((error) => {
+          console.error("Error updating post:", error);
+        });
+      }
+    }
+
+    postForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const ptitle = document.getElementById("post-title").value;
+      const message = document.getElementById("message").value;
+      database.ref("posts").push({
+        postTitle: ptitle,
+        postContent: message
+      });
+      postForm.reset();
+      alert("Your message has been sent!");
+    });
+
+    // Load messages and posts
+    loadMessages();
+    loadPosts();
+  </script>
+</body>
+</html>
