@@ -1,0 +1,87 @@
+/* Add this CSS to a separate CSS file, or you can use inline styles in your React component. */
+body{
+  background-color: #201e1e;
+  color: white;
+}
+.container {
+    max-width: 600px;
+    margin: 20px;
+  padding: 10px;
+    border: 1px solid #3a3939;
+    box-shadow: 0 0 5px rgb(0, 0, 0);
+    background-color: rgb(0, 0, 0);
+
+    
+  }
+
+  h1 {
+
+    font-size: 24px;
+  }
+  
+  form {
+    margin-top: 20px;
+  }
+  
+  label {
+    display: block;
+    font-weight: bold;
+
+  }
+  
+  input[type="text"],
+  textarea {
+    width: 80%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  button[type="submit"] {
+    background-color: #011830;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  table {
+    width: 80%;
+    align-items: center;
+    border-collapse: collapse;
+    margin-top: 20px;
+    
+  }
+  .flex{
+    display: flex;
+    align-items: center;
+  }
+  
+  th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  th {
+    background-color: #01162c;
+    color: #fff;
+  }
+  
+  button {
+    background-color: #fd031c;
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .edit{
+    padding-bottom:2px;
+    background-color: blue;
+  }
+  .delete{
+    padding-top: 2px;
+  }
